@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>📝 Asesmen Harian</title>
+    <!-- Google Font modern -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        /* ---------- RESET & GLOBAL ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(145deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 40px;
+        }
+
+        /* ---------- GLASSMORPHISM CONTAINER ---------- */
+        .container {
+            max-width: 860px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(18px) saturate(180%);
+            -webkit-backdrop-filter: blur(18px) saturate(180%);
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            padding: 40px 45px 50px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative glow */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 20%, rgba(124, 58, 237, 0.15), transparent 60%),
+                radial-gradient(circle at 70% 80%, rgba(37, 99, 235, 0.10), transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ---------- HEADER ---------- */
+        .header {
+            text-align: center;
+            margin-bottom: 34px;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .header-top .logo-wrapper {
+            position: relative;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        .header-top .logo-wrapper img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .header-top .logo-wrapper img:hover {
+            border-color: rgba(124, 58, 237, 0.6);
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.2);
+        }
+
+        .header-top .logo-wrapper .upload-hint {
+            position: absolute;
+            bottom: -6px;
+            right: -6px;
+            background: rgba(124, 58, 237, 0.9);
+            color: white;
+            font-size: 0.6rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .header-top .logo-wrapper:hover .upload-hint {
+            opacity: 1;
+        }
+
+        .header-top .logo-wrapper input[type="file"] {
+            display: none;
+        }
+
+        .header h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #f0eaff 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            font-weight: 400;
+            margin-top: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        .divider {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.6), transparent);
+            border-radius: 10px;
+            width: 120px;
+            margin: 14px auto 0;
+        }
+
+        .header-actions {
+            margin-top: 16px;
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn-rekap {
+            background: rgba(124, 58, 237, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            color: #d8cfff;
+            padding: 10px 26px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-rekap:hover {
+            background: rgba(124, 58, 237, 0.35);
+            border-color: rgba(124, 58, 237, 0.6);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.25);
+        }
+
+        /* ---------- FORM LOGIN ---------- */
+        .login-form {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: 28px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .login-form:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .login-form .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px 20px;
+            align-items: center;
+        }
+
+        .login-form label {
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 120px;
+        }
+
+        .login-form input,
+        .login-form select {
+            padding: 12px 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            font-size: 0.95rem;
+            color: #ffffff;
+            transition: all 0.3s ease;
+            flex: 1 1 200px;
+            min-width: 150px;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .login-form input::placeholder {
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .login-form input:focus,
+        .login-form select:focus {
+            border-color: rgba(124, 58, 237, 0.6);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.15);
+        }
+
+        .login-form select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        .login-form .btn-start {
+            background: linear-gradient(135deg, #7c3aed, #6366f1);
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: flex-start;
+            margin-top: 4px;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+        }
+
+        .login-form .btn-start:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.45);
+        }
+
+        .login-form .btn-start:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* ---------- INFO BAR ---------- */
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 14px 24px;
+            border-radius: 18px;
+            margin-bottom: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .info-bar .student-info {
+            font-weight: 500;
+        }
+
+        .info-bar .student-info span {
+            color: #a78bfa;
+            font-weight: 600;
+        }
+
+        .info-bar .question-counter {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        /* ---------- SOAL ---------- */
+        .question-area {
+            margin-bottom: 30px;
+            animation: fadeSlide 0.4s ease;
+        }
+
+        @keyframes fadeSlide {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 22px;
+            line-height: 1.6;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .options label {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 22px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 16px;
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .options label:hover {
+            background: rgba(255, 255, 255, 0.10);
+            border-color: rgba(255, 255, 255, 0.18);
+            transform: translateX(4px);
+        }
+
+        .options input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #7c3aed;
+            cursor: pointer;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 4px rgba(124, 58, 237, 0.3));
+        }
+
+        .options label.selected {
+            border-color: #7c3aed;
+            background: rgba(124, 58, 237, 0.20);
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.08), inset 0 0 0 1px rgba(124, 58, 237, 0.2);
+            transform: translateX(6px);
+        }
+
+        /* ---------- NAVIGASI ---------- */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .nav-buttons button {
+            padding: 14px 34px;
+            border: none;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-prev {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .btn-prev:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(-3px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-prev:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #7c3aed, #6366f1);
+            color: white;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.25);
+        }
+
+        .btn-next:hover:not(:disabled) {
+            transform: translateX(3px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-next:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            transform: scale(1.03);
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.45);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* ---------- HASIL / RESULT ---------- */
+        .result-container {
+            display: none;
+            animation: fadeSlide 0.6s ease;
+        }
+
+        .result-container.show {
+            display: block;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 28px;
+            padding: 36px 32px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .result-card .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7c3aed, #6366f1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            color: white;
+            box-shadow: 0 16px 40px rgba(124, 58, 237, 0.35);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .result-card .score-circle .score-number {
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .result-card .score-circle .score-label {
+            font-size: 0.8rem;
+            opacity: 0.85;
+            margin-top: 4px;
+        }
+
+        .result-card .grade {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .result-card .grade span {
+            background: linear-gradient(135deg, #a78bfa, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.4rem;
+        }
+
+        .result-card .message {
+            margin-top: 6px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+        }
+
+        .result-card .detail-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 22px 0 18px;
+            flex-wrap: wrap;
+        }
+
+        .result-card .detail-stats div {
+            background: rgba(255, 255, 255, 0.06);
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        .result-card .detail-stats .correct {
+            color: #34d399;
+        }
+        .result-card .detail-stats .wrong {
+            color: #f87171;
+        }
+
+        .result-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .btn-rekap-small {
+            background: rgba(124, 58, 237, 0.2);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            color: #d8cfff;
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            padding: 14px 32px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-rekap-small:hover {
+            background: rgba(124, 58, 237, 0.35);
+            border-color: rgba(124, 58, 237, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* ---------- REVIEW JAWABAN ---------- */
+        .review-section {
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .review-section h3 {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .review-item {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            border-left: 5px solid rgba(255, 255, 255, 0.10);
+            transition: all 0.2s ease;
+        }
+
+        .review-item.correct {
+            border-left-color: #34d399;
+            background: rgba(52, 211, 153, 0.08);
+        }
+
+        .review-item.wrong {
+            border-left-color: #f87171;
+            background: rgba(248, 113, 113, 0.08);
+        }
+
+        .review-item .r-question {
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+        }
+
+        .review-item .r-answer {
+            font-size: 0.9rem;
+            margin-top: 4px;
+            color: rgba(255, 255, 255, 0.65);
+        }
+
+        .review-item .r-answer .r-correct {
+            color: #34d399;
+            font-weight: 600;
+        }
+        .review-item .r-answer .r-wrong {
+            color: #f87171;
+            font-weight: 600;
+        }
+        .review-item .r-answer .r-user {
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        /* ---------- MODAL REKAP (Admin) ---------- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: rgba(30, 27, 75, 0.85);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 32px;
+            max-width: 920px;
+            width: 100%;
+            max-height: 85vh;
+            padding: 32px 36px 36px;
+            overflow: auto;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            animation: fadeSlide 0.4s ease;
+        }
+
+        .modal-content h2 {
+            font-size: 1.8rem;
+            color: #ffffff;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .modal-content .sub {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .modal-actions button {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-export-csv {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-export-csv:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-delete-all {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-delete-all:hover {
+            background: rgba(239, 68, 68, 0.35);
+            border-color: rgba(239, 68, 68, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-close-modal {
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 12px 32px;
+            border-radius: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 12px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-close-modal:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .modal-content table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .modal-content th {
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 14px 12px;
+            text-align: left;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.06);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .modal-content td {
+            padding: 12px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .modal-content tr:hover td {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .empty-rekap {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            padding: 40px 0;
+        }
+
+        /* ---------- SCROLLBAR MODERN ---------- */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(124, 58, 237, 0.4);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(124, 58, 237, 0.6);
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 640px) {
+            body {
+                padding: 12px;
+                padding-top: 20px;
+            }
+
+            .container {
+                padding: 22px 18px 30px;
+                border-radius: 28px;
+            }
+
+            .header-top {
+                gap: 12px;
+            }
+
+            .header-top .logo-wrapper img {
+                width: 48px;
+                height: 48px;
+            }
+
+            .header h1 {
+                font-size: 1.7rem;
+            }
+
+            .login-form {
+                padding: 20px 18px;
+            }
+
+            .login-form .form-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .login-form label {
+                min-width: unset;
+            }
+
+            .login-form .btn-start {
+                align-self: stretch;
+                justify-content: center;
+            }
+
+            .info-bar {
+                flex-direction: column;
+                gap: 8px;
+                align-items: flex-start;
+            }
+
+            .question-text {
+                font-size: 1.05rem;
+            }
+
+            .options label {
+                padding: 14px 16px;
+                font-size: 0.9rem;
+            }
+
+            .nav-buttons button {
+                flex: 1 1 100%;
+                justify-content: center;
+                padding: 14px 16px;
+            }
+
+            .result-card .score-circle {
+                width: 110px;
+                height: 110px;
+            }
+            .result-card .score-circle .score-number {
+                font-size: 2.4rem;
+            }
+
+            .result-card .detail-stats {
+                gap: 14px;
+            }
+            .result-card .detail-stats div {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+
+            .modal-content {
+                padding: 20px 16px;
+                max-height: 90vh;
+            }
+
+            .modal-content table {
+                font-size: 0.75rem;
+            }
+            .modal-content th,
+            .modal-content td {
+                padding: 8px 6px;
+            }
+
+            .modal-actions button {
+                font-size: 0.8rem;
+                padding: 8px 16px;
+            }
+
+            .result-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .result-actions button {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 16px 12px 24px;
+            }
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            .login-form input,
+            .login-form select {
+                font-size: 0.85rem;
+                padding: 10px 14px;
+            }
+            .options label {
+                font-size: 0.8rem;
+                padding: 12px 14px;
+                gap: 12px;
+            }
+        }
+
+        /* ---------- UTILITY ---------- */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .error-msg {
+            color: #f87171;
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="app">
+
+        <!-- ===== HEADER ===== -->
+        <div class="header">
+            <div class="header-top">
+                <div class="logo-wrapper" id="logoWrapper">
+                    <img id="logoImg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%237c3aed' opacity='0.8'/%3E%3Ctext x='50' y='58' font-size='36' text-anchor='middle' fill='white' font-family='Arial'%3E📝%3C/text%3E%3C/svg%3E" alt="Logo" />
+                    <span class="upload-hint">🔐 Admin</span>
+                    <input type="file" id="logoInput" accept="image/*" />
+                </div>
+                <h1>Asesmen Harian</h1>
+            </div>
+            <p>Masukkan nama lengkap, lalu mulai mengerjakan soal</p>
+            <div class="divider"></div>
+            <div class="header-actions">
+                <button class="btn-rekap" id="btnShowRekap">🔐 Admin - Lihat Rekap</button>
+            </div>
+        </div>
+
+        <!-- ===== FORM LOGIN ===== -->
+        <div class="login-form" id="loginForm">
+            <div class="form-row">
+                <label>👤 Nama Lengkap</label>
+                <input type="text" id="studentName" placeholder="Masukkan nama lengkap" required />
+            </div>
+            <div class="form-row">
+                <label>📚 Kelas</label>
+                <select id="studentClass">
+                    <option value="6 SD" selected>6 SD</option>
+                </select>
+            </div>
+            <button class="btn-start" id="btnStart">🚀 Mulai Asesmen</button>
+            <div id="loginError" class="error-msg hidden"></div>
+        </div>
+
+        <!-- ===== INFO BAR ===== -->
+        <div class="info-bar hidden" id="infoBar">
+            <div class="student-info">
+                👨‍🎓 <span id="displayName">-</span> &nbsp;|&nbsp; 📚 <span id="displayClass">-</span>
+            </div>
+            <div class="question-counter" id="questionCounter">Soal 1 / 10</div>
+        </div>
+
+        <!-- ===== AREA SOAL ===== -->
+        <div class="question-area hidden" id="questionArea">
+            <div class="question-text" id="questionText">Loading soal...</div>
+            <div class="options" id="optionsContainer">
+                <!-- options diisi oleh JS -->
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-prev" id="btnPrev" disabled>⬅ Sebelumnya</button>
+                <button class="btn-next" id="btnNext" disabled>Selanjutnya ➡</button>
+                <button class="btn-submit hidden" id="btnSubmit">✅ Selesai</button>
+            </div>
+        </div>
+
+        <!-- ===== HASIL ===== -->
+        <div class="result-container" id="resultContainer">
+            <div class="result-card">
+                <div class="score-circle">
+                    <div class="score-number" id="finalScore">0</div>
+                    <div class="score-label">dari 10</div>
+                </div>
+                <div class="grade">
+                    Nilai: <span id="finalGrade">-</span>
+                </div>
+                <div class="message" id="finalMessage">-</div>
+                <div class="detail-stats">
+                    <div class="correct">✅ Benar: <span id="correctCount">0</span></div>
+                    <div class="wrong">❌ Salah: <span id="wrongCount">0</span></div>
+                </div>
+
+                <div class="result-actions">
+                    <button class="btn-rekap-small" id="btnRekapFromResult">🔐 Admin - Rekap</button>
+                </div>
+
+                <!-- Review Jawaban -->
+                <div class="review-section" id="reviewSection">
+                    <h3>📋 Review Jawaban</h3>
+                    <div id="reviewList"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== MODAL REKAP (Admin) ===== -->
+        <div class="modal-overlay" id="modalRekap">
+            <div class="modal-content">
+                <h2>📊 Admin - Rekap Asesmen</h2>
+                <div class="sub">Semua siswa yang telah menyelesaikan asesmen. Data tersimpan di browser (localStorage).</div>
+
+                <div class="modal-actions">
+                    <button class="btn-export-csv" id="btnExportCSV">📥 Export CSV</button>
+                    <button class="btn-delete-all" id="btnDeleteAll">🗑 Hapus Semua</button>
+                </div>
+
+                <div id="rekapTableContainer">
+                    <!-- Tabel akan diisi oleh JS -->
+                </div>
+                <button class="btn-close-modal" id="btnCloseRekap">Tutup</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ================================================================
+        //  📝 DATA SOAL – Ubah sesuai keinginan Anda!
+        // ================================================================
+        const questions = [{
+            question: 'Apa kepanjangan dari HTML?',
+            options: [
+                'Hyper Text Markup Language',
+                'High Tech Modern Language',
+                'Hyper Transfer Markup Language',
+                'Home Tool Markup Language'
+            ],
+            answer: 0
+        }, {
+            question: 'CSS digunakan untuk…',
+            options: [
+                'Membuat struktur halaman web',
+                'Mengatur tampilan dan gaya halaman web',
+                'Membuat animasi 3D',
+                'Mengelola database'
+            ],
+            answer: 1
+        }, {
+            question: 'Manakah yang termasuk bahasa pemrograman?',
+            options: [
+                'HTML',
+                'CSS',
+                'JavaScript',
+                'JSON'
+            ],
+            answer: 2
+        }, {
+            question: 'Apa fungsi dari tag <body> dalam HTML?',
+            options: [
+                'Menampilkan judul halaman',
+                'Menyimpan konten utama halaman',
+                'Menyisipkan gambar',
+                'Membuat link'
+            ],
+            answer: 1
+        }, {
+            question: 'Bagaimana cara menulis komentar di JavaScript?',
+            options: [
+                '<!-- komentar -->',
+                '// komentar',
+                '/* komentar */',
+                'Kedua B dan C benar'
+            ],
+            answer: 3
+        }, {
+            question: 'Apa hasil dari 5 + "5" di JavaScript?',
+            options: [
+                '10',
+                '"55"',
+                'Error',
+                'undefined'
+            ],
+            answer: 1
+        }, {
+            question: 'Manakah yang merupakan CSS framework populer?',
+            options: [
+                'React',
+                'Bootstrap',
+                'Node.js',
+                'Express'
+            ],
+            answer: 1
+        }, {
+            question: 'Apa fungsi dari `console.log()` di JavaScript?',
+            options: [
+                'Menampilkan pesan di layar web',
+                'Mencetak pesan ke konsol browser',
+                'Membuat variabel',
+                'Menjalankan fungsi'
+            ],
+            answer: 1
+        }, {
+            question: 'Tag HTML yang digunakan untuk membuat hyperlink adalah…',
+            options: [
+                '<link>',
+                '<a>',
+                '<href>',
+                '<url>'
+            ],
+            answer: 1
+        }, {
+            question: 'Apa itu array di JavaScript?',
+            options: [
+                'Tipe data untuk teks',
+                'Struktur data untuk menyimpan banyak nilai',
+                'Fungsi untuk menghitung',
+                'Objek untuk membuat class'
+            ],
+            answer: 1
+        }];
+
+        // ================================================================
+        //  STATE
+        // ================================================================
+        let currentIndex = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let isSubmitted = false;
+        let studentName = '';
+        let studentClass = '';
+        let currentScore = 0;
+
+        // DOM refs
+        const $ = id => document.getElementById(id);
+        const studentNameInput = $('studentName');
+        const studentClassSelect = $('studentClass');
+        const btnStart = $('btnStart');
+        const loginError = $('loginError');
+        const infoBar = $('infoBar');
+        const displayName = $('displayName');
+        const displayClass = $('displayClass');
+        const questionArea = $('questionArea');
+        const questionText = $('questionText');
+        const optionsContainer = $('optionsContainer');
+        const questionCounter = $('questionCounter');
+        const btnPrev = $('btnPrev');
+        const btnNext = $('btnNext');
+        const btnSubmit = $('btnSubmit');
+        const resultContainer = $('resultContainer');
+        const finalScore = $('finalScore');
+        const finalGrade = $('finalGrade');
+        const finalMessage = $('finalMessage');
+        const correctCount = $('correctCount');
+        const wrongCount = $('wrongCount');
+        const reviewList = $('reviewList');
+        const btnShowRekap = $('btnShowRekap');
+        const btnRekapFromResult = $('btnRekapFromResult');
+        const modalRekap = $('modalRekap');
+        const btnCloseRekap = $('btnCloseRekap');
+        const rekapTableContainer = $('rekapTableContainer');
+        const btnExportCSV = $('btnExportCSV');
+        const btnDeleteAll = $('btnDeleteAll');
+
+        // ===== LOGO UPLOAD =====
+        const logoImg = $('logoImg');
+        const logoInput = $('logoInput');
+        const logoWrapper = $('logoWrapper');
+
+        // Load logo dari localStorage
+        function loadLogo() {
+            const savedLogo = localStorage.getItem('asesmenLogo');
+            if (savedLogo) {
+                logoImg.src = savedLogo;
+            }
+        }
+
+        // Simpan logo ke localStorage
+        function saveLogo(dataUrl) {
+            localStorage.setItem('asesmenLogo', dataUrl);
+            logoImg.src = dataUrl;
+        }
+
+        // Fungsi untuk mengecek password admin
+        function checkAdminPasswordForLogo() {
+            const pwd = prompt('🔐 Masukkan password admin untuk mengganti logo:');
+            if (pwd === 'akuganteng') {
+                return true;
+            } else {
+                if (pwd !== null) alert('❌ Password salah!');
+                return false;
+            }
+        }
+
+        // Event upload logo - hanya admin yang bisa
+        logoWrapper.addEventListener('click', function(e) {
+            // Jangan trigger jika yang diklik adalah tombol admin atau elemen lain
+            if (e.target.closest('.btn-rekap') || e.target.closest('.btn-start')) return;
+            
+            // Cek password admin terlebih dahulu
+            if (!checkAdminPasswordForLogo()) {
+                return;
+            }
+            
+            logoInput.click();
+        });
+
+        logoInput.addEventListener('change', function(e) {
+            const file = this.files[0];
+            if (!file) return;
+
+            // Validasi tipe file
+            if (!file.type.startsWith('image/')) {
+                alert('❌ Harap upload file gambar (JPG, PNG, GIF, dll).');
+                this.value = '';
+                return;
+            }
+
+            // Validasi ukuran (max 2MB)
+            if (file.size > 2 * 1024 * 1024) {
+                alert('❌ Ukuran gambar maksimal 2MB.');
+                this.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                saveLogo(event.target.result);
+                alert('✅ Logo berhasil diubah!');
+            };
+            reader.onerror = function() {
+                alert('❌ Gagal membaca file.');
+            };
+            reader.readAsDataURL(file);
+            this.value = '';
+        });
+
+        // Cegah event bubbling pada logo wrapper agar tidak konflik
+        logoWrapper.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+
+        // ================================================================
+        //  FUNGSI REKAP (localStorage)
+        // ================================================================
+        function getRekapData() {
+            try {
+                return JSON.parse(localStorage.getItem('rekapSiswa')) || [];
+            } catch {
+                return [];
+            }
+        }
+
+        function saveRekapData(data) {
+            localStorage.setItem('rekapSiswa', JSON.stringify(data));
+        }
+
+        function tambahRekap(entry) {
+            const data = getRekapData();
+            data.push(entry);
+            saveRekapData(data);
+        }
+
+        function getGrade(percent) {
+            if (percent >= 90) return 'A';
+            if (percent >= 75) return 'B';
+            if (percent >= 60) return 'C';
+            if (percent >= 40) return 'D';
+            return 'E';
+        }
+
+        function renderRekap() {
+            const data = getRekapData();
+            if (data.length === 0) {
+                rekapTableContainer.innerHTML = `<div class="empty-rekap">Belum ada siswa yang mengerjakan asesmen.</div>`;
+                return;
+            }
+            const sorted = [...data].reverse();
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>Kelas</th>
+                            <th>Skor</th>
+                            <th>Nilai</th>
+                            <th>Tanggal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            sorted.forEach((item, idx) => {
+                const score = item.skor || 0;
+                const total = questions.length;
+                const grade = getGrade(score / total * 100);
+                const date = item.tanggal ? new Date(item.tanggal).toLocaleString('id-ID') : '-';
+                html += `
+                    <tr>
+                        <td>${idx + 1}</td>
+                        <td>${item.nama || '-'}</td>
+                        <td>${item.kelas || '-'}</td>
+                        <td>${score}/${total}</td>
+                        <td>${grade}</td>
+                        <td>${date}</td>
+                    </tr>
+                `;
+            });
+            html += `</tbody></table>`;
+            rekapTableContainer.innerHTML = html;
+        }
+
+        // ================================================================
+        //  EXPORT CSV (untuk Spreadsheet)
+        // ================================================================
+        function exportCSV() {
+            const data = getRekapData();
+            if (data.length === 0) {
+                alert('Belum ada data rekap untuk diexport.');
+                return;
+            }
+            let csv = 'No,Nama,Kelas,Skor,Total,Nilai,Tanggal\n';
+            data.forEach((item, idx) => {
+                const score = item.skor || 0;
+                const total = questions.length;
+                const grade = getGrade(score / total * 100);
+                const date = item.tanggal ? new Date(item.tanggal).toLocaleString('id-ID') : '';
+                const row = [
+                    idx + 1,
+                    `"${item.nama || ''}"`,
+                    `"${item.kelas || ''}"`,
+                    score,
+                    total,
+                    `"${grade}"`,
+                    `"${date}"`
+                ].join(',');
+                csv += row + '\n';
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `rekap_asesmen_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        // ================================================================
+        //  HAPUS SEMUA REKAP
+        // ================================================================
+        function deleteAllRekap() {
+            if (!confirm('Yakin ingin menghapus semua data rekap? Tindakan ini tidak dapat dibatalkan.')) return;
+            saveRekapData([]);
+            renderRekap();
+            alert('Semua data rekap telah dihapus.');
+        }
+
+        // ================================================================
+        //  PASSWORD ADMIN
+        // ================================================================
+        function checkAdminPassword() {
+            const pwd = prompt('🔐 Masukkan password admin:');
+            if (pwd === 'akuganteng') {
+                return true;
+            } else {
+                if (pwd !== null) alert('❌ Password salah!');
+                return false;
+            }
+        }
+
+        // ================================================================
+        //  FUNGSI UTAMA (Ujian)
+        // ================================================================
+
+        function renderQuestion(index) {
+            const q = questions[index];
+            questionText.textContent = `${index + 1}. ${q.question}`;
+
+            let html = '';
+            q.options.forEach((opt, i) => {
+                const checked = (userAnswers[index] === i) ? 'checked' : '';
+                const selectedClass = (userAnswers[index] === i) ? 'selected' : '';
+                html += `
+                    <label class="${selectedClass}">
+                        <input type="radio" name="option" value="${i}" ${checked} />
+                        ${opt}
+                    </label>
+                `;
+            });
+            optionsContainer.innerHTML = html;
+
+            optionsContainer.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    const val = parseInt(e.target.value);
+                    userAnswers[currentIndex] = val;
+                    optionsContainer.querySelectorAll('label').forEach((label, idx) => {
+                        label.classList.toggle('selected', idx === val);
+                    });
+                    updateButtons();
+                });
+            });
+
+            questionCounter.textContent = `Soal ${index + 1} / ${questions.length}`;
+            btnPrev.disabled = (index === 0);
+            btnNext.disabled = (index === questions.length - 1);
+
+            if (index === questions.length - 1) {
+                btnSubmit.classList.remove('hidden');
+                btnNext.classList.add('hidden');
+                const allAnswered = userAnswers.every(a => a !== null);
+                btnSubmit.disabled = !allAnswered;
+            } else {
+                btnSubmit.classList.add('hidden');
+                btnNext.classList.remove('hidden');
+                btnNext.disabled = (userAnswers[index] === null);
+            }
+            updateButtons();
+        }
+
+        function updateButtons() {
+            btnPrev.disabled = (currentIndex === 0);
+            if (currentIndex < questions.length - 1) {
+                btnNext.disabled = (userAnswers[currentIndex] === null);
+            }
+            const allAnswered = userAnswers.every(a => a !== null);
+            if (currentIndex === questions.length - 1) {
+                btnSubmit.disabled = !allAnswered;
+            }
+        }
+
+        function goToPrev() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderQuestion(currentIndex);
+                questionArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function goToNext() {
+            if (currentIndex < questions.length - 1) {
+                currentIndex++;
+                renderQuestion(currentIndex);
+                questionArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // ================================================================
+        //  SUBMIT + SIMPAN REKAP
+        // ================================================================
+        function submitExam() {
+            if (isSubmitted) return;
+            const allAnswered = userAnswers.every(a => a !== null);
+            if (!allAnswered) {
+                alert('❗ Mohon jawab semua soal terlebih dahulu!');
+                return;
+            }
+
+            isSubmitted = true;
+
+            let correct = 0;
+            const reviewData = [];
+            questions.forEach((q, idx) => {
+                const userAns = userAnswers[idx];
+                const isCorrect = (userAns === q.answer);
+                if (isCorrect) correct++;
+                reviewData.push({
+                    question: q.question,
+                    userAns: userAns,
+                    correctAns: q.answer,
+                    isCorrect: isCorrect,
+                    options: q.options
+                });
+            });
+
+            const total = questions.length;
+            const score = Math.round((correct / total) * 100);
+            currentScore = score;
+            let grade, message;
+            if (score >= 90) { grade = 'A';
+                message = '🌟 Luar biasa! Pemahamanmu sangat baik!'; } else if (score >= 75) { grade = 'B';
+                message = '👍 Bagus! Terus tingkatkan pemahamanmu.'; } else if (score >= 60) { grade = 'C';
+                message = '📖 Cukup, perlu belajar lebih giat lagi.'; } else if (score >= 40) { grade = 'D';
+                message = '😓 Masih banyak yang perlu dipelajari.'; } else { grade = 'E';
+                message = '💪 Jangan menyerah, coba ulangi lagi!'; }
+
+            const entry = {
+                nama: studentName,
+                kelas: studentClass,
+                skor: correct,
+                total: total,
+                tanggal: new Date().toISOString(),
+                jawaban: userAnswers.slice()
+            };
+            tambahRekap(entry);
+
+            finalScore.textContent = `${correct}/${total}`;
+            finalGrade.textContent = grade;
+            finalMessage.textContent = message;
+            correctCount.textContent = correct;
+            wrongCount.textContent = total - correct;
+
+            let reviewHtml = '';
+            reviewData.forEach((r, i) => {
+                const statusClass = r.isCorrect ? 'correct' : 'wrong';
+                const userText = r.userAns !== null ? r.options[r.userAns] : '(tidak dijawab)';
+                const correctText = r.options[r.correctAns];
+                reviewHtml += `
+                    <div class="review-item ${statusClass}">
+                        <div class="r-question">${i + 1}. ${r.question}</div>
+                        <div class="r-answer">
+                            Jawaban kamu: <span class="r-user">${userText}</span>
+                            ${!r.isCorrect ? `&nbsp;•&nbsp; Jawaban benar: <span class="r-correct">${correctText}</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            reviewList.innerHTML = reviewHtml;
+
+            questionArea.classList.add('hidden');
+            infoBar.classList.add('hidden');
+            resultContainer.classList.add('show');
+            resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // ================================================================
+        //  RESET
+        // ================================================================
+        function resetExam() {
+            isSubmitted = false;
+            currentIndex = 0;
+            userAnswers = new Array(questions.length).fill(null);
+
+            resultContainer.classList.remove('show');
+            questionArea.classList.add('hidden');
+            infoBar.classList.add('hidden');
+
+            studentNameInput.value = '';
+            studentClassSelect.value = '6 SD';
+            studentNameInput.disabled = false;
+            studentClassSelect.disabled = false;
+            btnStart.disabled = false;
+            btnStart.textContent = '🚀 Mulai Asesmen';
+            loginError.classList.add('hidden');
+
+            document.querySelector('.container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ================================================================
+        //  MULAI ASESMEN
+        // ================================================================
+        function startExam() {
+            const name = studentNameInput.value.trim();
+            const cls = studentClassSelect.value;
+
+            loginError.classList.add('hidden');
+            if (!name) {
+                loginError.textContent = '❗ Nama lengkap harus diisi.';
+                loginError.classList.remove('hidden');
+                studentNameInput.focus();
+                return;
+            }
+
+            studentName = name;
+            studentClass = cls;
+
+            displayName.textContent = studentName;
+            displayClass.textContent = studentClass;
+            infoBar.classList.remove('hidden');
+
+            studentNameInput.disabled = true;
+            studentClassSelect.disabled = true;
+            btnStart.disabled = true;
+            btnStart.textContent = '⏳ Asesmen berjalan...';
+
+            isSubmitted = false;
+            userAnswers = new Array(questions.length).fill(null);
+            currentIndex = 0;
+
+            questionArea.classList.remove('hidden');
+            resultContainer.classList.remove('show');
+
+            renderQuestion(0);
+            updateButtons();
+
+            questionArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // ================================================================
+        //  MODAL REKAP (Admin) – dengan password
+        // ================================================================
+        function showRekapModal() {
+            if (!checkAdminPassword()) return;
+            renderRekap();
+            modalRekap.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeRekapModal() {
+            modalRekap.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // ================================================================
+        //  EVENT LISTENERS
+        // ================================================================
+        btnStart.addEventListener('click', startExam);
+        btnPrev.addEventListener('click', goToPrev);
+        btnNext.addEventListener('click', goToNext);
+        btnSubmit.addEventListener('click', submitExam);
+        btnShowRekap.addEventListener('click', showRekapModal);
+        btnRekapFromResult.addEventListener('click', showRekapModal);
+        btnCloseRekap.addEventListener('click', closeRekapModal);
+        modalRekap.addEventListener('click', (e) => {
+            if (e.target === modalRekap) closeRekapModal();
+        });
+        btnExportCSV.addEventListener('click', exportCSV);
+        btnDeleteAll.addEventListener('click', deleteAllRekap);
+
+        studentNameInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') startExam(); });
+
+        // ================================================================
+        //  INISIALISASI
+        // ================================================================
+        // Load logo yang tersimpan
+        loadLogo();
+
+        renderQuestion(0);
+        questionArea.classList.add('hidden');
+        infoBar.classList.add('hidden');
+        resultContainer.classList.remove('show');
+
+        console.log('📝 Asesmen Harian dengan tampilan glass modern siap!');
+        console.log('🔑 Password admin: akuganteng');
+        console.log(`📚 ${questions.length} soal dimuat.`);
+        console.log('🖼️ Klik logo untuk mengganti gambar (hanya admin dengan password akuganteng).');
+    </script>
+</body>
+</html>
